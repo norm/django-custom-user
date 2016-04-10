@@ -3,8 +3,11 @@ from django.contrib.auth import (
     authenticate,
     login,
     logout,
-    REDIRECT_FIELD_NAME
+    REDIRECT_FIELD_NAME,
+    update_session_auth_hash,
 )
+from django.contrib.auth.forms import PasswordChangeForm
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import resolve_url
 from django.utils.decorators import method_decorator
@@ -18,6 +21,25 @@ from .forms import AuthenticationForm, NewAccountForm
 
 class AccountView(TemplateView):
     template_name = 'accounts/account.html'
+
+
+class ChangePasswordView(FormView):
+    template_name = 'accounts/change_password.html'
+    form_class = PasswordChangeForm
+
+    def get_form(self):
+        return PasswordChangeForm(
+            user=self.request.user,
+            data=self.request.POST,
+        )
+
+    def form_valid(self, form):
+        form.save()
+        update_session_auth_hash(self.request, form.user)
+        return super(ChangePasswordView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('accounts:password_changed')
 
 
 class LoginView(FormView):
@@ -94,3 +116,7 @@ class NewAccountView(FormView):
         user = authenticate(email=email, password=password)
         login(self.request, user)
         return super(NewAccountView, self).form_valid(form)
+
+
+class PasswordChangedView(TemplateView):
+    template_name = 'accounts/password_changed.html'

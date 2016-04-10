@@ -2,9 +2,11 @@ from django.conf.urls import url
 
 from apps.accounts.views import (
     AccountView,
+    ChangePasswordView,
     LoginView,
     LogoutView,
     NewAccountView,
+    PasswordChangedView,
 )
 
 
@@ -28,5 +30,15 @@ urlpatterns = [
         r'^new$',
         NewAccountView.as_view(),
         name='new',
+    ),
+    url(
+        r'^change-password$',
+        ChangePasswordView.as_view(),
+        name='change_password',
+    ),
+    url(
+        r'^password-changed$',
+        PasswordChangedView.as_view(),
+        name='password_changed',
     ),
 ]
