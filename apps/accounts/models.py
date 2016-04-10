@@ -54,3 +54,7 @@ class User(PermissionsMixin, AbstractBaseUser):
 
     def get_short_name(self):
         return self.familiar_name
+
+    @property
+    def welcome_name(self):
+        return self.familiar_name or self.full_name or self.email

@@ -13,7 +13,7 @@
     <ul>
     {% if user.is_authenticated %}
       <li class='user'>
-        {{user}}
+        <a href='{% url "accounts:account" %}'>{{user.welcome_name}}</a>
       </li>
     {% else %}
       <li>

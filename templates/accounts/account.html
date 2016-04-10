@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block body %}
+  <h1>{{user}}{# shows the email address #}</h1>
+  <dl>
+    <dt>Full name</dt>
+    <dd>{{user.full_name}}</dd>
+    <dt>Familiar name</dt>
+    <dd>{{user.familiar_name}}</dd>
+  </dl>
+
+{% endblock %}
