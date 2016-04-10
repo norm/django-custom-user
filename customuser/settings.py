@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'apps.accounts'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -86,6 +88,7 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
+AUTH_USER_MODEL = 'accounts.User'
 
 dcapv = 'django.contrib.auth.password_validation'
 AUTH_PASSWORD_VALIDATORS = [
