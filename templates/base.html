@@ -15,6 +15,12 @@
       <li class='user'>
         <a href='{% url "accounts:account" %}'>{{user.welcome_name}}</a>
       </li>
+      <li class='logout'>
+        <form action='{% url "accounts:logout" %}' method='post'>
+          {% csrf_token %}
+          <button type='submit'>Logout</button>
+        </form>
+      </li>
     {% else %}
       <li class='login'>
         <a href='{% url "accounts:login" %}'>Login</a>

@@ -1,5 +1,6 @@
 from django.conf import settings
-from django.contrib.auth import login, REDIRECT_FIELD_NAME
+from django.contrib.auth import login, logout, REDIRECT_FIELD_NAME
+from django.http import HttpResponseRedirect
 from django.shortcuts import resolve_url
 from django.utils.decorators import method_decorator
 from django.utils.http import is_safe_url
@@ -42,3 +43,26 @@ class LoginView(FormView):
         if not is_safe_url(url=redirect_to, host=self.request.get_host()):
             redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
         return redirect_to
+
+
+class LogoutView(TemplateView):
+    redirect_field_name = REDIRECT_FIELD_NAME
+    template_name = 'accounts/logout.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(LogoutView, self).get_context_data(*args, **kwargs)
+        context[self.redirect_field_name] = self.get_success_url()
+        return context
+
+    def get_success_url(self):
+        redirect_to = self.request.POST.get(
+            self.redirect_field_name,
+            self.request.GET.get(self.redirect_field_name)
+        )
+        if not is_safe_url(url=redirect_to, host=self.request.get_host()):
+            redirect_to = resolve_url(settings.LOGOUT_REDIRECT_URL)
+        return redirect_to
+
+    def post(self, request, *args, **kwargs):
+        logout(request)
+        return HttpResponseRedirect(self.get_success_url())

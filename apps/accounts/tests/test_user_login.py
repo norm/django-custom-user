@@ -1,15 +1,12 @@
-from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 
 from django_webtest import WebTest
 
+from . import AccountTestMixin
 
-class UserWebTest(WebTest):
-    EMAIL = 'user@example.com'
-    PASSWORD = 'correct horse battery staple'
-    INCORRECT_PASSWORD = 'incorrect horse'
 
-    def test_login_in_navigation(self):
+class UserLoginWebTest(AccountTestMixin, WebTest):
+    def test_login_is_in_navigation(self):
         page = self.app.get(reverse('homepage'))
         self.assertFalse(
             page.html.find('li', class_='user')
@@ -19,12 +16,6 @@ class UserWebTest(WebTest):
         )
 
     def test_can_login(self):
-        get_user_model().objects.create_user(
-            email=self.EMAIL,
-            password=self.PASSWORD,
-            is_active=True,
-        )
-
         form = self.app.get(reverse('accounts:login')).form
         form['email'] = self.EMAIL
         form['password'] = self.PASSWORD
@@ -69,12 +60,6 @@ class UserWebTest(WebTest):
             )
 
     def test_login_respects_next_param(self):
-        get_user_model().objects.create_user(
-            email=self.EMAIL,
-            password=self.PASSWORD,
-            is_active=True,
-        )
-
         url = '%s?next=/' % reverse('accounts:login')
         form = self.app.get(url).form
         form['email'] = self.EMAIL
