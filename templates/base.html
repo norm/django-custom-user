@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+  <style>
+    nav { margin: 0 0 1em; }
+    nav ul { margin: 0; padding: 0; }
+    nav li { margin-right: 0.4em; }
+    nav li, nav form { display: inline-block; }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+    {% if user.is_authenticated %}
+      <li class='user'>
+        {{user}}
+      </li>
+    {% else %}
+      <li>
+        Not logged in
+      </li>
+    {% endif %}
+    </ul>
+  </nav>
+
+  {% block body %}
+  {% endblock %}
+</body>
+</html>
