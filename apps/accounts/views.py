@@ -1,5 +1,10 @@
 from django.conf import settings
-from django.contrib.auth import login, logout, REDIRECT_FIELD_NAME
+from django.contrib.auth import (
+    authenticate,
+    login,
+    logout,
+    REDIRECT_FIELD_NAME
+)
 from django.http import HttpResponseRedirect
 from django.shortcuts import resolve_url
 from django.utils.decorators import method_decorator
@@ -8,7 +13,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import FormView, TemplateView
 
-from .forms import AuthenticationForm
+from .forms import AuthenticationForm, NewAccountForm
 
 
 class AccountView(TemplateView):
@@ -66,3 +71,26 @@ class LogoutView(TemplateView):
     def post(self, request, *args, **kwargs):
         logout(request)
         return HttpResponseRedirect(self.get_success_url())
+
+
+class NewAccountView(FormView):
+    form_class = NewAccountForm
+    redirect_field_name = REDIRECT_FIELD_NAME
+    template_name = 'accounts/new.html'
+
+    def get_success_url(self):
+        redirect_to = self.request.POST.get(
+            self.redirect_field_name,
+            self.request.GET.get(self.redirect_field_name)
+        )
+        if not is_safe_url(url=redirect_to, host=self.request.get_host()):
+            redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
+        return redirect_to
+
+    def form_valid(self, form):
+        form.save()
+        email = form.cleaned_data['email']
+        password = form.cleaned_data['password1']
+        user = authenticate(email=email, password=password)
+        login(self.request, user)
+        return super(NewAccountView, self).form_valid(form)

@@ -6,6 +6,7 @@
     nav ul { margin: 0; padding: 0; }
     nav li { margin-right: 0.4em; }
     nav li, nav form { display: inline-block; }
+    form label { display: block; }
   </style>
 </head>
 <body>
@@ -24,6 +25,9 @@
     {% else %}
       <li class='login'>
         <a href='{% url "accounts:login" %}'>Login</a>
+      </li>
+      <li class='new'>
+        <a href='{% url "accounts:new" %}'>Create new account</a>
       </li>
     {% endif %}
     </ul>

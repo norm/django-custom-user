@@ -4,9 +4,9 @@
   <h1>{{user}}{# shows the email address #}</h1>
   <dl>
     <dt>Full name</dt>
-    <dd>{{user.full_name}}</dd>
+    <dd class='name'>{{user.full_name|default:"Not set"}}</dd>
     <dt>Familiar name</dt>
-    <dd>{{user.familiar_name}}</dd>
+    <dd class='name'>{{user.familiar_name|default:"Not set"}}</dd>
   </dl>
 
 {% endblock %}
