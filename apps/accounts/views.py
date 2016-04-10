@@ -40,6 +40,13 @@ class ChangePasswordView(FormView):
 
     def get_success_url(self):
         return reverse('accounts:password_changed')
+        # redirect_to = self.request.POST.get(
+        #     self.redirect_field_name,
+        #     self.request.GET.get(self.redirect_field_name)
+        # )
+        # if not is_safe_url(url=redirect_to, host=self.request.get_host()):
+        #     redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
+        # return redirect_to
 
 
 class LoginView(FormView):

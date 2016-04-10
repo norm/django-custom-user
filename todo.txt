@@ -1,0 +1,21 @@
+# TODO
+
+Bug:
+* "This field is required" on change password page before form filled out
+
+CI:
+* setup CI
+* add style checks to CI
+* add coverage to CI
+
+Fixes:
+* add login required mixins
+* test login required status
+
+New views:
+* confirm email address
+* password reset by email
+* login by email?
+
+Other:
+* mergeable branch that adds usernames and profile pages
