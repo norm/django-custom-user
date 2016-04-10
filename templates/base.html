@@ -16,8 +16,8 @@
         <a href='{% url "accounts:account" %}'>{{user.welcome_name}}</a>
       </li>
     {% else %}
-      <li>
-        Not logged in
+      <li class='login'>
+        <a href='{% url "accounts:login" %}'>Login</a>
       </li>
     {% endif %}
     </ul>
